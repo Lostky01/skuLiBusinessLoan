@@ -39,21 +39,38 @@ class DataPinjamController extends Controller
         $pinjam->save();
         return redirect()->route('datapinjam.index')->with('success', 'Data Pinjam berhasil disimpan.');
     }
+    public function EditDataPinjam($id)
+    {
+        $data = DataPinjam::findOrFail($id);
+        $databarang = DataBarang::pluck('nama', 'id');
+        return view('form-edit-pinjam', compact('data', 'databarang'));
+    }
 
     public function update(Request $request, $id) {
+        $pinjam = DataPinjam::findOrFail($id);
         $request->validate([
             'kelas' => 'required',
             'namabarang' => 'required',
             'mapel' => 'required',
             'namaguru' => 'required',
+            'status' => 'required',
         ]);
 
-        $pinjam = DataPinjam::findOrFail($id);
         $pinjam->kelas = $request->input('kelas');
         $pinjam->nama_barang = $request->input('namabarang');
         $pinjam->pelajaran = $request->input('mapel');
         $pinjam->nama_guru = $request->input('namaguru');
-        $pinjam->status =  'Belum Dikembalikan';
+        $pinjam->status =  $request->input('status');
+        $pinjam->save();
+        return redirect()->route('datapinjam.index')->with('success', 'Data Pinjam berhasil disimpan.');
+    }
+
+    public function destroy($id)
+    {
+        $data = DataPinjam::find($id);
+        $data->delete();
+
+        return redirect()->route('datapinjam.index')->with('success', 'Information deleted successfully.');
     }
 
 }

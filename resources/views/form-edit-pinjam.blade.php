@@ -5,7 +5,7 @@
             <div class="container-fluid">
                 <div class="col-12">
                     <div class="card recent-sales overflow-auto p-5 br-5">
-                        <form action="{{ route('datapinjam.store') }}" method="post" enctype="multipart/form-data">
+                        <form action="{{ route('datapinjam.update', $data->id) }}" method="post" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <h2 class="nav-heading" style="font-family: 'General Sans', sans-serif;font-weight:500">Form
@@ -16,7 +16,7 @@
                                     <span>Kelas/Jurusan</span>
                                 </div>
                                 <div class="col-10">
-                                    <input type="text" id="kelas" name="kelas" value="{{ old('kelas') }}"
+                                    <input type="text" id="kelas" name="kelas" value="{{ $data->kelas }}"
                                         style="padding:15px;width: 100%; border: 1px solid rgba(255, 255, 255, 0.636);background:#F0F2F5;line-height:normal;border-radius:10px">
                                 </div>
                             </div>
@@ -25,7 +25,7 @@
                                     <span>Nama Barang</span>
                                 </div>
                                 <div class="col-10">
-                                    <input type="text" id="namabarang" name="namabarang" value="{{ old('namabarang') }}"
+                                    <input type="text" id="namabarang" name="namabarang" value="{{ $data->nama_barang }}"
                                     style="padding: 15px; width: 100%; border: 1px solid rgba(255, 255, 255, 0.636); background: #F0F2F5; line-height: normal; border-radius: 10px"
                                     placeholder="">
                                 </div>
@@ -35,7 +35,7 @@
                                     <span>Mata Pelajaran</span>
                                 </div>
                                 <div class="col-10">
-                                    <input type="text" id="mapel" name="mapel" value="{{ old('mapel') }}"
+                                    <input type="text" id="mapel" name="mapel" value="{{ $data->pelajaran }}"
                                         style="padding:15px;width: 100%; border: 1px solid rgba(255, 255, 255, 0.636);background:#F0F2F5;line-height:normal;border-radius:10px">
                                 </div>
                             </div>
@@ -44,8 +44,19 @@
                                     <span>Nama Guru</span>
                                 </div>
                                 <div class="col-10">
-                                    <input type="text" id="namaguru" name="namaguru" value="{{ old('namaguru') }}"
+                                    <input type="text" id="namaguru" name="namaguru" value="{{ $data->nama_guru }}"
                                         style="padding:15px;width: 100%; border: 1px solid rgba(255, 255, 255, 0.636);background:#F0F2F5;line-height:normal;border-radius:10px">
+                                </div>
+                            </div>
+                            <div class="row mt-5">
+                                <div class="col-2" style="line-height: -5%">
+                                    <span>Status</span>
+                                </div>
+                                <div class="col-10">
+                                    <select class="form-select" aria-label="select example" name="status" id="status" style="padding:15px;width: 100%; border: 1px solid rgba(255, 255, 255, 0.636);background:#F0F2F5;line-height:normal;border-radius:10px">
+                                        <option value="Belum Dikembalikan" @if($data->status == "Belum Dikembalikan") selected @endif>Belum Dikembalikan</option>
+                                        <option value="Sudah Dikembalikan" @if($data->status == "Sudah Dikembalikan") selected @endif>Sudah Dikembalikan</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row mt-5">

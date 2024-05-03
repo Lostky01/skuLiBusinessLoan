@@ -63,17 +63,23 @@
                   <td>{{ $item->nama_barang }}</td>
                   <td>{{ $item->pelajaran }}</td>
                   <td>{{ $item->nama_guru }}</td>
+                  @if ($item->status == 'Belum Dikembalikan')
                   <td><span class="badge text-bg-warning">{{ $item->status }}</span></td>
+                  @else
+                  <td><span class="badge text-bg-success">{{ $item->status }}</span></td>
+                  @endif
                   <td>
                     <div class="row">
                       <div class="col-3">
-                        <button class="btn btn-primary"
-                                        style="background-color: #13B07E; width: 40px; border: none;"><i class="bi bi-pencil"></i></button>
+                        <a class="btn btn-primary" href="{{ route('datapinjam.formeditpinjam', $item->id) }}" style="background-color: #13B07E; width: 40px; border: none;"><i class="bi bi-pencil"></i></a>
                       </div>
                       <div class="col-3">
-                        <button class="btn btn-primary"
-                                        style="background-color: #e90606; width: 40px; border: none;"><i class="bi bi-trash"></i></button>
+                      <form action="{{ route('deletepinjam', $item->id) }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-primary"  style="background-color: #e90606; width: 40px; border: none;"><i class="bi bi-trash"></i></button>
                       </div>
+                      </form>
                     </div>
                   </td>
                 </tr>
@@ -91,5 +97,8 @@
 
 </main><!-- End #main -->
 
+@endsection
+
+@section('script')
 @endsection
  
