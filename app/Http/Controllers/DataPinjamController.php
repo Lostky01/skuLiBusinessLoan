@@ -14,6 +14,26 @@ class DataPinjamController extends Controller
     {
         return view('login-form');
     }
+    public function registerindex()
+    {
+        return view('register-form');
+    }
+
+    public function register(Request $request)
+    {
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+        $user = new UserDB();
+        $user->username = $request->username;
+        $user->password = $request->password;
+        if($user->save()) {
+            return redirect()->route('datapinjam.login')->with('success');
+        } else {
+            return back()->with('error', 'Invalid credentials');
+        }
+    }
 
     public function Authuser(Request $request)
     {
@@ -26,15 +46,21 @@ class DataPinjamController extends Controller
         $user = UserDB::where('username', $request->username)
                        ->where('password', $request->password)
                        ->first();
-        dd($user); 
+
         if ($user) {
-            \Log::info('User found: ' . $user->username); 
-            return redirect()->route('datapinjam.index')->with('username', $user->username);
+            \Log::info('User found: ' . $user->username);
+
+            session([
+                'username' => $user->username,
+            ]);
+
+            return redirect()->route('datapinjam.index');
         } else {
-            \Log::info('User not found'); 
+            \Log::info('User not found');
             return back()->with('error', 'Invalid credentials');
         }
     }
+
     public function index()
     {
         $data = DataPinjam::orderBy('data_pinjam.created_at', 'desc')->get();
@@ -150,6 +176,12 @@ class DataPinjamController extends Controller
         $data->delete();
 
         return redirect()->route('databarang.index')->with('success', 'Information deleted successfully.');
+    }
+
+    public function logout() {
+        session()->flush();
+
+        return redirect()->route('datapinjam.login');
     }
 
 }

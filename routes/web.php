@@ -7,7 +7,8 @@ use app\Http\Controllers\UserController;
 
 
 Route::get('/', [DataPinjamController::class, 'login'])->name('datapinjam.login');
-Route::get('/index', [DataPinjamController::class, 'indexbarang'])->name('datapinjam.index');
+Route::get('/register-menu', [DataPinjamController::class, 'registerindex'])->name('datapinjam.register');
+Route::get('/index', [DataPinjamController::class, 'index'])->name('datapinjam.index');
 Route::get('/pinjam', [DataPinjamController::class, 'pinjamform'])->name('datapinjam.formpinjam');
 Route::post('/pinjamstore', [DataPinjamController::class, 'store'])->name('datapinjam.store');
 Route::get('/getID', [DataPinjamController::class, 'getKode'])->name('datapinjam.getIDbarang');
@@ -22,3 +23,5 @@ Route::get('/edit-barang/{id}', [DataPinjamController::class, 'EditDataBarang'])
 Route::put('/barangedit/{id}', [DataPinjamController::class, 'updatebarang'])->name('databarang.update');
 Route::delete('/delete-barang/{id}', [DataPinjamController::class, 'destroybarang'])->name('deletebarang');
 Route::post('/auth', [DataPinjamController::class, 'Authuser'])->name('user-auth');
+Route::post('/register', [DataPinjamController::class, 'register'])->name('register');
+Route::get('logout', [DataPinjamController::class, 'logout'])->name('logout');

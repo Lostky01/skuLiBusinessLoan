@@ -14,13 +14,13 @@
                 <div class="col-5" style="border: 0;background:white;padding:5%">
                     <div class="row">
                         <div class="col-10">
-                            <h5>Log in</h5>
+                            <h5>Register</h5>
                         </div>
                         <div class="col-2">
                             <img src="{{ asset('asset-image/logo.png') }}" width="64" height="64" alt="">
                         </div>
                     </div>
-                    <form action="{{ route('user-auth') }}" class="mt-5" method="post">
+                    <form action="{{ route('register') }}" class="mt-5" method="post">
                       @csrf
                         <label for="username"
                             style="font-family: 'General Sans', sans-serif; font-size:14px; color:#656565;">Username</label>
@@ -33,8 +33,8 @@
                             style="padding: 15px; width: 100%; border: 1px solid rgba(255, 255, 255, 0.736); background: #F0F2F5; line-height: normal; border-radius: 10px"
                             placeholder="">
                           <button class="btn btn-primary" type="submit"
-                            style="background-color: #13B07E; width: 100%; height:5vh; border: none;">Login</button>
-                            <center><span class="small-thing" style="font-family: 'General Sans', sans-serif; font-size:14px; color:#656565;">Don't have account yet? <a href="{{ route('datapinjam.register') }}">register</a></span></center>
+                            style="background-color: #13B07E; width: 100%; height:5vh; border: none;">Register</button>
+                            <center><span class="small-thing" style="font-family: 'General Sans', sans-serif; font-size:14px; color:#656565;">Already have an account? <a href="{{ route('datapinjam.login') }}">Login</a></span></center>
                     </form>
                 </div>
             </div>
