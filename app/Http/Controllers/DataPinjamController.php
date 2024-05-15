@@ -7,6 +7,7 @@ use App\Models\DataBarang;
 use App\Models\UserDB;
 use Illuminate\Http\Request;
 use DB;
+use Illuminate\Support\Facades\Log;
 
 class DataPinjamController extends Controller
 {
@@ -64,6 +65,12 @@ class DataPinjamController extends Controller
     public function index()
     {
         $data = DataPinjam::orderBy('data_pinjam.created_at', 'desc')->get();
+        foreach($data as $item) {
+            $getBarangName = DB::table('data_barang')->where('id', $item->nama_barang)->first();
+            if ($getBarangName) {
+                $item->nama_barang = $getBarangName->nama;
+            }
+        }
         return view('dashboard_pinjam', compact('data'));
     }
 
@@ -71,6 +78,62 @@ class DataPinjamController extends Controller
     {
         $data = DataBarang::orderBy('data_barang.created_at', 'desc')->get();
         return view('form-barang', compact('data'));
+    }
+
+    public function formbarang()
+    {
+        $databarang = DataBarang::pluck('nama', 'id');
+        return view('form-create-barang', compact('databarang'));
+    }
+
+    public function barangstore(Request $request)
+    {
+        $request->validate([
+            'namabarang' => 'required',
+            'jumlahbarang' => 'required',
+        ]);
+
+        $pinjam = new DataBarang();
+        $pinjam->nama = $request->namabarang;
+        $pinjam->jumlah = $request->jumlahbarang;
+        $pinjam->jumlah_default = $request->jumlahbarang;
+        $pinjam->save();
+        return redirect()->route('databarang.index')->with('success', 'Data Barang berhasil disimpan.');
+    }
+
+    public function EditDataBarang($id)
+    {
+        $data = DataBarang::findOrFail($id);
+        $databarang = DataBarang::pluck('nama', 'id');
+        return view('form-edit-barang', compact('data', 'databarang'));
+    }
+
+    public function updatebarang(Request $request, $id)
+    {
+        $barang = DataBarang::findOrFail($id);
+
+        $request->validate([
+            'namabarang' => 'required',
+            'jumlahbarang' => 'required|integer|min:0',
+        ]);
+
+        $newJumlahDefault = $request->input('jumlahbarang');
+        $oldJumlahDefault = $barang->jumlah_default;
+        $difference = $newJumlahDefault - $oldJumlahDefault;
+        $barang->nama = $request->input('namabarang');
+        $barang->jumlah_default = $newJumlahDefault;
+        $barang->jumlah += $difference;
+        $barang->save();
+        return redirect()->route('databarang.index')->with('success', 'Data Barang berhasil diperbarui.');
+    }
+
+
+    public function destroybarang($id)
+    {
+        $data = DataBarang::find($id);
+        $data->delete();
+
+        return redirect()->route('databarang.index')->with('success', 'Information deleted successfully.');
     }
 
     public function pinjamform()
@@ -87,16 +150,27 @@ class DataPinjamController extends Controller
             'mapel' => 'required',
             'namaguru' => 'required',
         ]);
-
-        $pinjam = new DataPinjam();
-        $pinjam->kelas = $request->kelas;
-        $pinjam->nama_barang = $request->namabarang;
-        $pinjam->pelajaran = $request->mapel;
-        $pinjam->nama_guru = $request->namaguru;
-        $pinjam->status =  'Belum Dikembalikan';
-        $pinjam->save();
-        return redirect()->route('datapinjam.index')->with('success', 'Data Pinjam berhasil disimpan.');
+        $barang = DataBarang::where('id', $request->namabarang)->first();
+        if ($barang) {
+            if ($barang->jumlah > 0) {
+                $barang->jumlah -= 1;
+                $barang->save();
+                $pinjam = new DataPinjam();
+                $pinjam->kelas = $request->kelas;
+                $pinjam->nama_barang = $request->namabarang;
+                $pinjam->pelajaran = $request->mapel;
+                $pinjam->nama_guru = $request->namaguru;
+                $pinjam->status = 'Belum Dikembalikan';
+                $pinjam->save();
+                return redirect()->route('datapinjam.index')->with('success', 'Data Pinjam berhasil disimpan.');
+            } else {
+                return redirect()->route('datapinjam.index')->with('error', 'Jumlah barang tidak mencukupi.');
+            }
+        } else {
+            return redirect()->route('datapinjam.index')->with('error', 'Barang tidak ditemukan.');
+        }
     }
+
     public function EditDataPinjam($id)
     {
         $data = DataPinjam::findOrFail($id);
@@ -132,53 +206,8 @@ class DataPinjamController extends Controller
         return redirect()->route('datapinjam.index')->with('success', 'Information deleted successfully.');
     }
 
-    public function formbarang()
+    public function logout()
     {
-        $databarang = DataBarang::pluck('nama', 'id');
-        return view('form-create-barang', compact('databarang'));
-    }
-
-    public function barangstore(Request $request)
-    {
-        $request->validate([
-            'namabarang' => 'required',
-        ]);
-
-        $pinjam = new DataBarang();
-        $pinjam->nama = $request->namabarang;
-        $pinjam->save();
-        return redirect()->route('databarang.index')->with('success', 'Data Barang berhasil disimpan.');
-    }
-
-    public function EditDataBarang($id)
-    {
-        $data = DataBarang::findOrFail($id);
-        $databarang = DataBarang::pluck('nama', 'id');
-        return view('form-edit-barang', compact('data', 'databarang'));
-    }
-
-    public function updatebarang(Request $request, $id)
-    {
-        $pinjam = DataBarang::findOrFail($id);
-        $request->validate([
-            'namabarang' => 'required',
-        ]);
-
-        $pinjam->nama = $request->input('namabarang');
-        $pinjam->save();
-        return redirect()->route('databarang.index')->with('success', 'Data Pinjam berhasil disimpan.');
-    }
-
-
-    public function destroybarang($id)
-    {
-        $data = DataBarang::find($id);
-        $data->delete();
-
-        return redirect()->route('databarang.index')->with('success', 'Information deleted successfully.');
-    }
-
-    public function logout() {
         session()->flush();
 
         return redirect()->route('datapinjam.login');

@@ -24,9 +24,15 @@
                                     <span>Nama Barang</span>
                                 </div>
                                 <div class="col-10">
-                                    <input type="text" id="namabarang" name="namabarang" value="{{ old('namabarang') }}"
-                                    style="padding: 15px; width: 100%; border: 1px solid rgba(255, 255, 255, 0.636); background: #F0F2F5; line-height: normal; border-radius: 10px"
-                                    placeholder="">
+                                    <select class="js-example-basic-single"  style="padding:15px;width: 100%; border: 1px solid rgba(255, 255, 255, 0.636);background:#F0F2F5;line-height:normal;border-radius:10px" id="namabarang"
+                                        name="namabarang">
+                                        <option value="" selected disabled>Pilih Barang</option>
+                                        @foreach ($databarang as $key => $item)
+                                            <option value="{{ $key }}"
+                                                {{ old('namabarang') == $key ? 'selected' : '' }}>
+                                                {{ $item }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
                             <div class="row mt-5">

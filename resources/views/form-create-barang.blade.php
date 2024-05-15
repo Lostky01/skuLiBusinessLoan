@@ -21,6 +21,16 @@
                                 </div>
                             </div>
                             <div class="row mt-5">
+                                <div class="col-2" style="line-height: -5%;">
+                                    <span>Jumlah Barang</span>
+                                </div>
+                                <div class="col-10">
+                                    <input type="text" id="jumlahbarang" name="jumlahbarang" value="{{ old('jumlahbarang') }}"
+                                    style="padding: 15px; width: 100%; border: 1px solid rgba(255, 255, 255, 0.636); background: #F0F2F5; line-height: normal; border-radius: 10px"
+                                    placeholder="">
+                                </div>
+                            </div>
+                            <div class="row mt-5">
                                 <div class="col-2" style="line-height: -5%">
 
                                 </div>

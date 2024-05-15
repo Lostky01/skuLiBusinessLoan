@@ -12,5 +12,7 @@ class DataBarang extends Model
     protected $table = 'data_barang';
     protected $fillable = [
         'nama',
+        'jumlah',
+        'jumlah_default',
     ];
 }
