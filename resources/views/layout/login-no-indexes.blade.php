@@ -8,7 +8,8 @@
   <title>Website Peminjaman RPL</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
-
+  <link href="https://fonts.cdnfonts.com/css/helvetica-neue-55" rel="stylesheet">
+                
   <!-- Favicons -->
   <link href="{{ asset('asset-image/logo.png') }}" rel="icon">
   <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">

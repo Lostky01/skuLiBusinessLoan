@@ -1,8 +1,11 @@
 <?php
+
 // dia adalah orang yang selalu tertarik mendengarkan ceritaku
 // meski kadang ceritaku aneh dan gajelas, dan di pikiran orang lain mungkin gw udah dibilang orang halu/gila
 // entahlah, semoga dia baik baik saja ☆*: .｡. o(≧▽≦)o .｡.:*☆
+
 namespace App\Http\Controllers;
+
 use App\Models\DataPinjam;
 use App\Models\DataBarang;
 use App\Models\UserDB;
@@ -10,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Models\Role;
 use DB;
 use Illuminate\Support\Facades\Log;
+
 // aku mencintaimu, nurfalah maulina!<3
 class DataPinjamController extends Controller
 {
@@ -40,7 +44,7 @@ class DataPinjamController extends Controller
             return back()->with('error', 'Invalid credentials');
         }
     }
-    
+
     public function Authuser(Request $request)
     {
         \Log::info('Authuser method is being executed');
@@ -197,10 +201,10 @@ class DataPinjamController extends Controller
     public function update(Request $request, $id)
     {
         $pinjam = DataPinjam::findOrFail($id);
-        
+
         $request->validate([
             'kelas' => 'required',
-            'namabarang' => 'required', 
+            'namabarang' => 'required',
             'mapel' => 'required',
             'namaguru' => 'required',
             'status' => 'required',
@@ -220,8 +224,18 @@ class DataPinjamController extends Controller
 
     public function destroy($id)
     {
-        $data = DataPinjam::find($id);
-        $data->delete();
+        $dataPinjam = DataPinjam::find($id);
+        if(!$dataPinjam) {
+            return redirect()->route('datapinjam.index')->with('error', 'Data Pinjam not found.');
+        }
+
+        $barang = DataBarang::find($dataPinjam->nama_barang);
+        if($barang) {
+            $barang->jumlah += 1; 
+            $barang->save();
+        }
+
+        $dataPinjam->delete();
 
         return redirect()->route('datapinjam.index')->with('success', 'Information deleted successfully.');
     }

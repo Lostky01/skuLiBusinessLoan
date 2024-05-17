@@ -5,14 +5,14 @@
 @endsection
 @section('content')
     <section class="formlogin" style="padding:10%;">
-        <img src="{{ asset('asset-image/laptopthingy.png') }}" alt="" style="position: absolute; top:350px;left:50px;z-index: 1;">
-        <div class="container-fluid" style="border: 0; border-radius:20px;">
+        <img src="{{ asset('asset-image/laptopthingy.png') }}" alt="" style="position: absolute; top:350px;left:150px;z-index: 1;">
+        <div class="container" style="border: 0; border-radius:20px;">
             <div class="row" style="border-radius: 20px">
-                <div class="col-4" style="background-color: #1DC08B;padding:2%;">
-                  <h1 style="font-family: 'Coolvetica', sans-serif;color:white;font-weight:400;">Only in RPL can you find <br> impeccably safe and <br> organized borrowed items</h1>
+                <div class="col-6" style="background-color: #1DC08B;padding:2%;">
+                  <h1 style="font-family: 'Helvetica Neue', sans-serif; color:white;font-weight:500; font-size:35px">Only in RPL can you find <br> impeccably safe and <br> organized borrowed items</h1>
                   
                 </div>
-                <div class="col-8" style="border: 0;background:white;padding:5%">
+                <div class="col-5" style="border: 0;background:white;padding:5%">
                     <div class="row">
                         <div class="col-10">
                             <h5>Log in</h5>
