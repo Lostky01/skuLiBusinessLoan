@@ -30,7 +30,7 @@
                             placeholder="">
                         <label for="password" class="mt-2"
                             style="font-family: 'General Sans', sans-serif; font-size:14px; color:#656565;">Password</label>
-                        <input type="text" id="password" name="password" value="{{ old('password') }}" class="mb-5"
+                        <input type="password" id="password" name="password" value="{{ old('password') }}" class="mb-5"
                             style="padding: 15px; width: 100%; border: 1px solid rgba(255, 255, 255, 0.736); background: #F0F2F5; line-height: normal; border-radius: 10px"
                             placeholder="">
                           <button class="btn btn-primary" type="submit"

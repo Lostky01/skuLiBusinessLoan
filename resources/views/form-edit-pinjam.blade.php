@@ -5,7 +5,8 @@
             <div class="container-fluid">
                 <div class="col-12">
                     <div class="card recent-sales overflow-auto p-5 br-5">
-                        <form action="{{ route('datapinjam.update', $data->id) }}" method="post" enctype="multipart/form-data">
+                        <form action="{{ route('datapinjam.update', $data->id) }}" method="post"
+                            enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
                             <h2 class="nav-heading" style="font-family: 'General Sans', sans-serif;font-weight:500">Form
@@ -25,14 +26,13 @@
                                     <span>Nama Barang</span>
                                 </div>
                                 <div class="col-10">
-                                    <select id="namabarang"
-                                    name="namabarang" style="padding:15px;width: 100%; border: 1px solid rgba(255, 255, 255, 0.636);background:#F0F2F5;line-height:normal;border-radius:10px">
-                                    <option value="" selected disabled>Pilih Barang</option>
-                                    @foreach ($project as $key => $item)
-                                        <option value="{{ $key }}"
-                                            {{ $data->nama_barang == $key ? 'selected' : '' }}>
-                                            {{ $item }}</option>
-                                    @endforeach
+                                    <select class="js-example-basic-single" name="namabarang" id="namabarang" style="padding:15px;width: 100%; border: 1px solid rgba(255, 255, 255, 0.636);background:#F0F2F5;line-height:normal;border-radius:10px">
+                                        <option value="" disabled>Pilih Barang</option>
+                                        @foreach ($databarang as $key => $item)
+                                            <option value="{{ $key }}" @if ($key == $data->nama_barang) selected @endif>
+                                                {{ $item }}</option>
+                                        @endforeach
+                                    </select>   
                                 </div>
                             </div>
                             <div class="row mt-5">
@@ -40,7 +40,9 @@
                                     <span>Kode Barang</span>
                                 </div>
                                 <div class="col-10">
-                                    <input type="text" id="kodebarang" name="kodebarang" value="{{ $data->kode_barang }}"
+                                    <input type="text" id="kodebarang" name="kodebarang"
+                                        value="{{ $data->kode_barang ? $data->kode_barang : '-' }}"
+                                        {{ $data->kode_barang ? '' : 'disabled' }}
                                         style="padding:15px;width: 100%; border: 1px solid rgba(255, 255, 255, 0.636);background:#F0F2F5;line-height:normal;border-radius:10px">
                                 </div>
                             </div>
@@ -67,9 +69,12 @@
                                     <span>Status</span>
                                 </div>
                                 <div class="col-10">
-                                    <select class="form-select" aria-label="select example" name="status" id="status" style="padding:15px;width: 100%; border: 1px solid rgba(255, 255, 255, 0.636);background:#F0F2F5;line-height:normal;border-radius:10px">
-                                        <option value="Belum Dikembalikan" @if($data->status == "Belum Dikembalikan") selected @endif>Belum Dikembalikan</option>
-                                        <option value="Sudah Dikembalikan" @if($data->status == "Sudah Dikembalikan") selected @endif>Sudah Dikembalikan</option>
+                                    <select class="form-select" aria-label="select example" name="status" id="status"
+                                        style="padding:15px;width: 100%; border: 1px solid rgba(255, 255, 255, 0.636);background:#F0F2F5;line-height:normal;border-radius:10px">
+                                        <option value="Belum Dikembalikan"
+                                            @if ($data->status == 'Belum Dikembalikan') selected @endif>Belum Dikembalikan</option>
+                                        <option value="Sudah Dikembalikan"
+                                            @if ($data->status == 'Sudah Dikembalikan') selected @endif>Sudah Dikembalikan</option>
                                     </select>
                                 </div>
                             </div>

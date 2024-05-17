@@ -9,6 +9,7 @@ class DataPinjam extends Model
     protected $fillable = [
         'kelas',
         'nama_barang',
+        'kode_barang',
         'pelajaran',
         'nama_guru',
         'status',

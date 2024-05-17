@@ -32,7 +32,6 @@
                             </div>
                             <div class="row mt-5">
                                 <div class="col-2" style="line-height: -5%">
-
                                 </div>
                                 <div class="col-10">
                                     <button class="btn btn-primary" type="submit"

@@ -1,15 +1,16 @@
 <?php
-//aku cinta nurfalah maulina
+// dia adalah orang yang selalu tertarik mendengarkan ceritaku
+// meski kadang ceritaku aneh dan gajelas, dan di pikiran orang lain mungkin gw udah dibilang orang halu/gila
+// entahlah, semoga dia baik baik saja ☆*: .｡. o(≧▽≦)o .｡.:*☆
 namespace App\Http\Controllers;
-
 use App\Models\DataPinjam;
 use App\Models\DataBarang;
 use App\Models\UserDB;
 use Illuminate\Http\Request;
-Use App\Models\Role;
+use App\Models\Role;
 use DB;
 use Illuminate\Support\Facades\Log;
-
+// aku mencintaimu, nurfalah maulina!<3
 class DataPinjamController extends Controller
 {
     public function login()
@@ -39,7 +40,7 @@ class DataPinjamController extends Controller
             return back()->with('error', 'Invalid credentials');
         }
     }
-
+    
     public function Authuser(Request $request)
     {
         \Log::info('Authuser method is being executed');
@@ -57,16 +58,15 @@ class DataPinjamController extends Controller
             $role = DB::table('role-user')->where('id', $user->role)->first();
             if($role) {
                 $roleName = $role->role;
-            }
-            else {
+            } else {
                 $roleName = 'Gatau'; //dumbass code
             }
-    
+
             session([
                 'username' => $user->username,
                 'role' => $roleName,
             ]);
-        
+
 
             return redirect()->route('datapinjam.index');
         } else {
@@ -113,6 +113,8 @@ class DataPinjamController extends Controller
         return redirect()->route('databarang.index')->with('success', 'Data Barang berhasil disimpan.');
     }
 
+    // 15-5-24 masih rusak nih kode
+    // 17-5-24 emang rusak semua sih kodenya
     public function EditDataBarang($id)
     {
         $data = DataBarang::findOrFail($id);
@@ -195,22 +197,24 @@ class DataPinjamController extends Controller
     public function update(Request $request, $id)
     {
         $pinjam = DataPinjam::findOrFail($id);
+        
         $request->validate([
             'kelas' => 'required',
-            'namabarang' => 'required',
-            'kodebarang' => 'required',
+            'namabarang' => 'required', 
             'mapel' => 'required',
             'namaguru' => 'required',
             'status' => 'required',
         ]);
-
         $pinjam->kelas = $request->input('kelas');
         $pinjam->nama_barang = $request->input('namabarang');
         $pinjam->kode_barang = $request->input('kodebarang');
         $pinjam->pelajaran = $request->input('mapel');
         $pinjam->nama_guru = $request->input('namaguru');
         $pinjam->status =  $request->input('status');
+
         $pinjam->save();
+
+
         return redirect()->route('datapinjam.index')->with('success', 'Data Pinjam berhasil disimpan.');
     }
 
