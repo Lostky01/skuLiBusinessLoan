@@ -9,7 +9,7 @@
         <div class="container" style="border: 0; border-radius:20px;">
             <div class="row" style="border-radius: 20px">
                 <div class="col-6" style="background-color: #1DC08B;padding:2%;">
-                  <h1 style="font-family: 'Helvetica Neue', sans-serif; color:white;font-weight:500; font-size:35px">Only in RPL can you find <br> impeccably safe and <br> organized borrowed items</h1>
+                  <h1 style="font-family: 'Helvetica Neue', sans-serif; color:white;font-weight:500; font-size:35px">Only in RPL you can find <br> impeccably safe and <br> organized borrowed items</h1>
                   
                 </div>
                 <div class="col-5" style="border: 0;background:white;padding:5%">

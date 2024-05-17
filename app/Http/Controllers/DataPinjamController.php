@@ -1,11 +1,6 @@
 <?php
-
-// dia adalah orang yang selalu tertarik mendengarkan ceritaku
-// meski kadang ceritaku aneh dan gajelas, dan di pikiran orang lain mungkin gw udah dibilang orang halu/gila
-// entahlah, semoga dia baik baik saja ☆*: .｡. o(≧▽≦)o .｡.:*☆
-
+// kalo jelek, download aja terus benerin sendiri terus fuck off, jangan ngedm gm gw, emang gw gabisa ngoding.
 namespace App\Http\Controllers;
-
 use App\Models\DataPinjam;
 use App\Models\DataBarang;
 use App\Models\UserDB;
@@ -14,9 +9,9 @@ use App\Models\Role;
 use DB;
 use Illuminate\Support\Facades\Log;
 
-// aku mencintaimu, nurfalah maulina!<3
 class DataPinjamController extends Controller
 {
+    // do i have to explain myself
     public function login()
     {
         return view('login-form');
@@ -32,7 +27,7 @@ class DataPinjamController extends Controller
         $request->validate([
             'username' => 'required',
             'password' => 'required',
-            'role' => 'required',
+            'role' => 'required', 
         ]);
         $user = new UserDB();
         $user->username = $request->username;
@@ -45,6 +40,8 @@ class DataPinjamController extends Controller
         }
     }
 
+    // fungsi tolol disentuh dikit rusak, babi emang
+    // sialadadandajidowoodwqijoeqejqeojqioejqioejqio
     public function Authuser(Request $request)
     {
         \Log::info('Authuser method is being executed');
@@ -126,6 +123,8 @@ class DataPinjamController extends Controller
         return view('form-edit-barang', compact('data', 'databarang'));
     }
 
+
+    // hari sial, tapi gapapalah semangat diriku sendiri
     public function updatebarang(Request $request, $id)
     {
         $barang = DataBarang::findOrFail($id);
@@ -205,17 +204,17 @@ class DataPinjamController extends Controller
         $request->validate([
             'kelas' => 'required',
             'namabarang' => 'required',
-            'mapel' => 'required',
+            // Kode barang gak gw sertain karena default nya NULL, jadi kalo gw tambahin required gak bakal bisa ke store form nya
+            'mapel' => 'required', 
             'namaguru' => 'required',
             'status' => 'required',
         ]);
         $pinjam->kelas = $request->input('kelas');
         $pinjam->nama_barang = $request->input('namabarang');
-        $pinjam->kode_barang = $request->input('kodebarang');
+        $pinjam->kode_barang = $request->input('kodebarang'); //input gamasalah ya anjeng
         $pinjam->pelajaran = $request->input('mapel');
         $pinjam->nama_guru = $request->input('namaguru');
         $pinjam->status =  $request->input('status');
-
         $pinjam->save();
 
 
@@ -228,7 +227,7 @@ class DataPinjamController extends Controller
         if(!$dataPinjam) {
             return redirect()->route('datapinjam.index')->with('error', 'Data Pinjam not found.');
         }
-
+        //gila pusing bikin nih method
         $barang = DataBarang::find($dataPinjam->nama_barang);
         if($barang) {
             $barang->jumlah += 1; 
@@ -248,3 +247,7 @@ class DataPinjamController extends Controller
     }
 
 }
+// dia adalah orang yang selalu tertarik mendengarkan ceritaku
+// meski kadang ceritaku aneh dan gajelas, dan di pikiran orang lain mungkin gw udah dibilang orang halu/gila
+// entahlah, semoga dia baik baik saja ☆*: .｡. o(≧▽≦)o .｡.:*☆
+// aku mencintaimu, nurfalah maulina!<3

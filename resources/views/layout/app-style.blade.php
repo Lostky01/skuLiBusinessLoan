@@ -50,7 +50,7 @@
                     ENGINEERING</span>
             </a>
             <i class="bi bi-list toggle-sidebar-btn"></i>
-
+            {{-- WOW, MY NAME SHOWED ON THIS LIST, AMAZINGGAGAGAGAGAGGAGAGAG --}}
             @if (session()->has('username'))
                 <a class="user-welcoming nav-link nav-profile d-flex align-items-center pe-0" href="#"
                     data-bs-toggle="dropdown">
@@ -59,7 +59,7 @@
             @else
                 <a class="user-welcoming nav-link nav-profile d-flex align-items-center pe-0" href="#"
                     data-bs-toggle="dropdown">
-                    <span class="d-none d-md-block ps-2">Selamat Datang, User</span>
+                    <span class="d-none d-md-block ps-2">Selamat Datang, Guest</span>
                 </a>
             @endif
 
@@ -87,6 +87,7 @@
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
                         data-bs-toggle="dropdown">
                         <img src="{{ asset('asset-image/profile-default.png') }}" alt="Profile" class="rounded-circle">
+                        {{-- session has username blablabla role shit --}}
                         @if (session()->has('username'))
                         <span class="d-none d-md-block dropdown-toggle ps-2">{{ session('username') }}</span>
                         @else
@@ -97,6 +98,7 @@
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                         <li class="dropdown-header">
+                            {{-- fungsi gacor kangggangwjiajfeuoipfjhbojdfeuiuiojofuw --}}
                             @if (session()->has('username')  && session()->has('role'))
                             <h6>{{ session('username') }}  ({{ session('role') }})</h6>
                             @else
