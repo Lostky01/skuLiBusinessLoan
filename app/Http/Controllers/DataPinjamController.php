@@ -1,5 +1,5 @@
 <?php
-
+//aku cinta nurfalah maulina
 namespace App\Http\Controllers;
 
 use App\Models\DataPinjam;
@@ -59,7 +59,7 @@ class DataPinjamController extends Controller
                 $roleName = $role->role;
             }
             else {
-                $roleName = 'kotnol';
+                $roleName = 'Gatau'; //dumbass code
             }
     
             session([
@@ -70,7 +70,7 @@ class DataPinjamController extends Controller
 
             return redirect()->route('datapinjam.index');
         } else {
-            \Log::info('User not found');
+            \Log::info('User not found'); // gue ngasih log setiap 30detik sekali cuman buat nyadar tiap ada session baru gabakal nongol lognya lmao
             return back()->with('error', 'Invalid credentials');
         }
     }
@@ -98,7 +98,6 @@ class DataPinjamController extends Controller
         $databarang = DataBarang::pluck('nama', 'id');
         return view('form-create-barang', compact('databarang'));
     }
-
     public function barangstore(Request $request)
     {
         $request->validate([
