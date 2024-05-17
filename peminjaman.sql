@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 10, 2024 at 12:19 PM
+-- Generation Time: May 15, 2024 at 03:52 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -30,6 +30,8 @@ SET time_zone = "+00:00";
 CREATE TABLE `data_barang` (
   `id` int(99) NOT NULL,
   `nama` varchar(255) NOT NULL,
+  `jumlah` int(99) NOT NULL,
+  `jumlah_default` int(99) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -38,11 +40,11 @@ CREATE TABLE `data_barang` (
 -- Dumping data for table `data_barang`
 --
 
-INSERT INTO `data_barang` (`id`, `nama`, `created_at`, `updated_at`) VALUES
-(2, 'Proyektor Infocus', '2024-04-23 03:28:50', '2024-04-23 03:28:50'),
-(3, 'Monitor PC', '2024-04-24 01:49:16', '2024-04-24 01:49:16'),
-(5, 'Proyektor', '2024-05-05 22:54:36', '2024-05-05 22:54:36'),
-(6, 'Kabel VGA', '2024-05-05 22:55:55', '2024-05-05 22:55:55');
+INSERT INTO `data_barang` (`id`, `nama`, `jumlah`, `jumlah_default`, `created_at`, `updated_at`) VALUES
+(2, 'Proyektor Infocus', 5, 5, '2024-04-23 03:28:50', '2024-05-14 23:57:22'),
+(3, 'Monitor PC', 5, 6, '2024-04-24 01:49:16', '2024-05-14 17:41:56'),
+(5, 'Proyektor', 5, 5, '2024-05-05 22:54:36', '2024-05-14 23:57:22'),
+(6, 'Kabel VGA', 5, 5, '2024-05-05 22:55:55', '2024-05-14 23:57:22');
 
 -- --------------------------------------------------------
 
@@ -68,7 +70,7 @@ CREATE TABLE `data_pinjam` (
 
 INSERT INTO `data_pinjam` (`id`, `tanggal`, `kelas`, `nama_barang`, `pelajaran`, `nama_guru`, `status`, `created_at`, `updated_at`) VALUES
 (5, '2024-04-30 01:57:13', 'XI RPL 3', 'Proyektor', 'PBO', 'Pak Rivan', 'Sudah Dikembalikan', '2024-04-29 18:57:13', '2024-05-05 22:27:41'),
-(7, '2024-05-10 09:56:34', 'XI RPL Industri', 'Kabel VGA', 'WEB', 'Pak Dedi', 'Belum Dikembalikan', '2024-05-10 02:56:34', '2024-05-10 02:56:34');
+(12, '2024-05-15 00:18:19', 'XI RPL 3', '3', 'WEB', 'Pak Rivan', 'Belum Dikembalikan', '2024-05-14 17:18:19', '2024-05-14 17:18:19');
 
 -- --------------------------------------------------------
 
@@ -123,13 +125,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `data_barang`
 --
 ALTER TABLE `data_barang`
-  MODIFY `id` int(99) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(99) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `data_pinjam`
 --
 ALTER TABLE `data_pinjam`
-  MODIFY `id` int(99) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(99) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `user`

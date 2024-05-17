@@ -20,6 +20,7 @@
                                     placeholder="">
                                 </div>
                             </div>
+                            
                             <div class="row mt-5">
                                 <div class="col-2" style="line-height: -5%;">
                                     <span>Jumlah Barang</span>

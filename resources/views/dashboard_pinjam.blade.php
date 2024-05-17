@@ -47,10 +47,13 @@
                                     <th scope="col">Tanggal/Jam</th>
                                     <th scope="col">Kelas</th>
                                     <th scope="col">Nama Barang</th>
+                                    <th scope="col">Kode Barang</th>
                                     <th scope="col">Pelajaran</th>
                                     <th scope="col">Nama Guru</th>
                                     <th scope="col">Status</th>
+                                    @if (session('role') == 'Admin')
                                     <th scope="col">Action</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -60,6 +63,11 @@
                                         <td>{{ $item->tanggal }}</td>
                                         <td>{{ $item->kelas }}</td>
                                         <td>{{ $item->nama_barang }}</td>
+                                        @if($item->kode_barang != '')
+                                        <td>{{ $item->kode_barang }}</td>
+                                        @else
+                                        <td>-</td>
+                                        @endif
                                         <td>{{ $item->pelajaran }}</td>
                                         <td>{{ $item->nama_guru }}</td>
                                         @if ($item->status == 'Belum Dikembalikan')
@@ -67,13 +75,13 @@
                                         @else
                                             <td><span class="badge text-bg-success">{{ $item->status }}</span></td>
                                         @endif
+                                        @if (session('role') == 'Admin' || session('role') == '1')
                                         <td>
                                             <div class="row">
                                                 <div class="col-3">
                                                     <a class="btn btn-primary"
                                                         href="{{ route('datapinjam.formeditpinjam', $item->id) }}"
-                                                        style="background-color: #13B07E; width: 40px; border: none;"><i
-                                                            class="bi bi-pencil"></i></a>
+                                                        style="background-color: #13B07E; width: 40px; border: none;"><i class="bi bi-pencil"></i></a>
                                                 </div>
                                                 <div class="col-3">
                                                     <form action="{{ route('deletepinjam', $item->id) }}" method="post">
@@ -86,6 +94,7 @@
                                                 </form>
                                             </div>
                                         </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                             </tbody>

@@ -97,8 +97,8 @@
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                         <li class="dropdown-header">
-                            @if (session()->has('username'))
-                            <h6>{{ session('username') }}</h6>
+                            @if (session()->has('username')  && session()->has('role'))
+                            <h6>{{ session('username') }}  ({{ session('role') }})</h6>
                             @else
                             <h6>Guest</h6>
                             @endif
@@ -169,7 +169,7 @@
                 </a>
             </li><!-- End Dashboard Nav -->
 
-
+            @if(session('role') == 'Admin' || session('role') == '1')
             <li class="nav-item">
                 <a class="nav-link collapsed {{ request()->routeIs('databarang.index') ? 'active' : '' }}"
                     href="{{ route('databarang.index') }}">
@@ -177,6 +177,7 @@
                     <span style="font-family: 'General Sans', sans-serif;font-weight:300">Data Barang</span>
                 </a>
             </li><!-- End Profile Page Nav -->
+            @endif
 
             <li class="nav-item">
                 <a class="nav-link collapsed {{ request()->routeIs('datapinjam.formpinjam') ? 'active' : '' }}"

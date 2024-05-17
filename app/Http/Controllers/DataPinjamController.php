@@ -6,6 +6,7 @@ use App\Models\DataPinjam;
 use App\Models\DataBarang;
 use App\Models\UserDB;
 use Illuminate\Http\Request;
+Use App\Models\Role;
 use DB;
 use Illuminate\Support\Facades\Log;
 
@@ -17,7 +18,8 @@ class DataPinjamController extends Controller
     }
     public function registerindex()
     {
-        return view('register-form');
+        $role = Role::pluck('role', 'id');
+        return view('register-form', compact('role'));
     }
 
     public function register(Request $request)
@@ -25,10 +27,12 @@ class DataPinjamController extends Controller
         $request->validate([
             'username' => 'required',
             'password' => 'required',
+            'role' => 'required',
         ]);
         $user = new UserDB();
         $user->username = $request->username;
         $user->password = $request->password;
+        $user->role = $request->role;
         if($user->save()) {
             return redirect()->route('datapinjam.login')->with('success');
         } else {
@@ -50,10 +54,19 @@ class DataPinjamController extends Controller
 
         if ($user) {
             \Log::info('User found: ' . $user->username);
-
+            $role = DB::table('role-user')->where('id', $user->role)->first();
+            if($role) {
+                $roleName = $role->role;
+            }
+            else {
+                $roleName = 'kotnol';
+            }
+    
             session([
                 'username' => $user->username,
+                'role' => $roleName,
             ]);
+        
 
             return redirect()->route('datapinjam.index');
         } else {
@@ -147,6 +160,7 @@ class DataPinjamController extends Controller
         $request->validate([
             'kelas' => 'required',
             'namabarang' => 'required',
+            'kodebarang' => 'required',
             'mapel' => 'required',
             'namaguru' => 'required',
         ]);
@@ -158,6 +172,7 @@ class DataPinjamController extends Controller
                 $pinjam = new DataPinjam();
                 $pinjam->kelas = $request->kelas;
                 $pinjam->nama_barang = $request->namabarang;
+                $pinjam->kode_barang = $request->kodebarang;
                 $pinjam->pelajaran = $request->mapel;
                 $pinjam->nama_guru = $request->namaguru;
                 $pinjam->status = 'Belum Dikembalikan';
@@ -184,6 +199,7 @@ class DataPinjamController extends Controller
         $request->validate([
             'kelas' => 'required',
             'namabarang' => 'required',
+            'kodebarang' => 'required',
             'mapel' => 'required',
             'namaguru' => 'required',
             'status' => 'required',
@@ -191,6 +207,7 @@ class DataPinjamController extends Controller
 
         $pinjam->kelas = $request->input('kelas');
         $pinjam->nama_barang = $request->input('namabarang');
+        $pinjam->kode_barang = $request->input('kodebarang');
         $pinjam->pelajaran = $request->input('mapel');
         $pinjam->nama_guru = $request->input('namaguru');
         $pinjam->status =  $request->input('status');

@@ -25,9 +25,23 @@
                                     <span>Nama Barang</span>
                                 </div>
                                 <div class="col-10">
-                                    <input type="text" id="namabarang" name="namabarang" value="{{ $data->nama_barang }}"
-                                    style="padding: 15px; width: 100%; border: 1px solid rgba(255, 255, 255, 0.636); background: #F0F2F5; line-height: normal; border-radius: 10px"
-                                    placeholder="">
+                                    <select id="namabarang"
+                                    name="namabarang" style="padding:15px;width: 100%; border: 1px solid rgba(255, 255, 255, 0.636);background:#F0F2F5;line-height:normal;border-radius:10px">
+                                    <option value="" selected disabled>Pilih Barang</option>
+                                    @foreach ($project as $key => $item)
+                                        <option value="{{ $key }}"
+                                            {{ $data->nama_barang == $key ? 'selected' : '' }}>
+                                            {{ $item }}</option>
+                                    @endforeach
+                                </div>
+                            </div>
+                            <div class="row mt-5">
+                                <div class="col-2" style="line-height: -5%">
+                                    <span>Kode Barang</span>
+                                </div>
+                                <div class="col-10">
+                                    <input type="text" id="kodebarang" name="kodebarang" value="{{ $data->kode_barang }}"
+                                        style="padding:15px;width: 100%; border: 1px solid rgba(255, 255, 255, 0.636);background:#F0F2F5;line-height:normal;border-radius:10px">
                                 </div>
                             </div>
                             <div class="row mt-5">
