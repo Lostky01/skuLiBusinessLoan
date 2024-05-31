@@ -9,7 +9,7 @@
                             enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
-                            <h2 class="nav-heading" style="font-family: 'General Sans', sans-serif;font-weight:500">Form
+                            <h2 class="nav-heading" style="font-family: 'General Sans', sans-serif;font-weight:500">Form Edit
                                 Peminjaman</h2>
                             <hr>
                             <div class="row mt-5">
@@ -36,7 +36,8 @@
                                 </div>
                                 <div class="col-10">
                                     <input type="text" id="namabarang" name="namabarang" value="{{ $data->nama_barang }}"
-                                        style="padding:15px;width: 100%; border: 1px solid rgba(255, 255, 255, 0.636);background:#F0F2F5;line-height:normal;border-radius:10px" readonly>
+                                        style="padding:15px;width: 100%; border: 1px solid rgba(255, 255, 255, 0.636);background:#F0F2F5;line-height:normal;border-radius:10px"
+                                        readonly>
                                 </div>
                             </div>
                             <div class="row mt-5">
@@ -117,36 +118,38 @@
         }
     </script>
     <script>
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $("#kodebarang").on('input', function() {
-            var kode = $(this).val();
-            if (kode) {
-                $.ajax({
-                    method: 'POST',
-                    url: "{{ route('info.getNameEdit') }}", // Make sure this route is correct
-                    data: {
-                        kode: kode
-                    }, // Send the kode as a parameter
-                    success: function(result) {
-                        if (result.msg === 'berhasil') {
-                            $('#namabarang').val(result.data); // Set the value of the text input
-                        } else {
-                            $('#namabarang').val('No data found');
+        document.addEventListener("DOMContentLoaded", function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $("#kodebarang").on('input', function() {
+                var kode = $(this).val();
+                if (kode) {
+                    $.ajax({
+                        method: 'POST',
+                        url: "{{ route('info.getNameEdit') }}", // Make sure this route is correct
+                        data: {
+                            kode: kode
+                        }, // Send the kode as a parameter
+                        success: function(result) {
+                            if (result.msg === 'berhasil') {
+                                $('#namabarang').val(result
+                                    .data); // Set the value of the text input
+                            } else {
+                                $('#namabarang').val('No data found');
+                            }
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            console.log(xhr.responseText);
+                            alert(xhr.responseText);
                         }
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                        console.log(xhr.responseText);
-                        alert(xhr.responseText);
-                    }
-                });
-            } else {
-                $('#namabarang').val(''); // Clear the text input if kode is empty
-            }
+                    });
+                } else {
+                    $('#namabarang').val(''); // Clear the text input if kode is empty
+                }
+            });
         });
     </script>
 @endsection
