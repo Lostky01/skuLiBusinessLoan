@@ -20,28 +20,24 @@
                                 </div>
                             </div>
                             <div class="row mt-5">
-                                <div class="col-2" style="line-height: -5%;">
-                                    <span>Nama Barang</span>
-                                </div>
-                                <div class="col-10">
-                                    <select class="js-example-basic-single"  style="padding:15px;width: 100%; border: 1px solid rgba(255, 255, 255, 0.636);background:#F0F2F5;line-height:normal;border-radius:10px" id="namabarang"
-                                        name="namabarang">
-                                        <option value="" selected disabled>Pilih Barang</option>
-                                        @foreach ($databarang as $key => $item)
-                                            <option value="{{ $key }}"
-                                                {{ old('namabarang') == $key ? 'selected' : '' }}>
-                                                {{ $item }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row mt-5">
                                 <div class="col-2" style="line-height: -5%">
                                     <span>Kode Barang</span>
                                 </div>
                                 <div class="col-10">
                                     <input type="text" id="kodebarang" name="kodebarang" value="{{ old('kodebarang') }}"
                                         style="padding:15px;width: 100%; border: 1px solid rgba(255, 255, 255, 0.636);background:#F0F2F5;line-height:normal;border-radius:10px">
+                                </div>
+                            </div>
+                            <div class="row mt-5">
+                                <div class="col-2" style="line-height: -5%;">
+                                    <span>Nama Barang</span>
+                                </div>
+                                <div class="col-10">
+                                    <select class="js-example-basic-single form-control" id="namabarang" name="namabarang"
+                                        style="padding:15px;width: 100%; border: 1px solid rgba(255, 255, 255, 0.636);background:#F0F2F5;line-height:normal;border-radius:10px"
+                                        disabled>
+                                        <option value="" selected disabled>Input kode terlebih dahulu</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row mt-5">
@@ -106,5 +102,48 @@
                 codeInput.removeAttribute('data-text');
             }
         }
+    </script>
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $("#kodebarang").on('input', function() {
+            var id = $(this).val(); // Get the input value
+            if (id) {
+                $.ajax({
+                    method: 'POST',
+                    url: "{{ route('info.getName') }}", // Update the route to match your needs
+                    data: {
+                        id: id
+                    }, // Send the id as a parameter
+                    success: function(result) {
+                        if (result.msg === 'berhasil') {
+                            $('#namabarang').prop('disabled', false); // Enable the select element
+                            $('#namabarang').find('option').remove().end();
+                            $('#namabarang').append(result.data);
+                        } else {
+                            $('#namabarang').find('option').remove().end();
+                            $('#namabarang').append('<option disabled>No data found</option>');
+                        }
+                        $('#namabarang').trigger('change');
+                        $('#namabarang').select2({
+                            theme: "bootstrap",
+                            width: "100%"
+                        });
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        console.log(xhr.responseText);
+                        alert(xhr.responseText);
+                    }
+                });
+            } else {
+                $('#namabarang').prop('disabled', true); // Disable the select element
+                $('#namabarang').find('option').remove().end();
+                $('#namabarang').append('<option value="" selected disabled>Input kode terlebih dahulu</option>');
+            }
+        });
     </script>
 @endsection

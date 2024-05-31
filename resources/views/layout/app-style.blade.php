@@ -13,7 +13,7 @@
     <link href="{{ asset('asset-image/logo.png') }}" rel="icon">
     <link href="{{ asset('assets/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.dataTables.css" />
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
     <link href="https://fonts.cdnfonts.com/css/bebas-neue" rel="stylesheet">
@@ -54,7 +54,7 @@
             @if (session()->has('username'))
                 <a class="user-welcoming nav-link nav-profile d-flex align-items-center pe-0" href="#"
                     data-bs-toggle="dropdown">
-                    <span class="d-none d-md-block ps-2">Selamat Datang, {{ session('username') }}</span>
+                    <span class="d-none d-md-block ps-2" id="username"></span>
                 </a>
             @else
                 <a class="user-welcoming nav-link nav-profile d-flex align-items-center pe-0" href="#"
@@ -86,23 +86,24 @@
 
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
                         data-bs-toggle="dropdown">
-                        <img src="{{ asset('asset-image/profile-default.png') }}" alt="Profile" class="rounded-circle">
+                        <img src="{{ asset('asset-image/profile-default.png') }}" alt="Profile"
+                            class="rounded-circle">
                         {{-- session has username blablabla role shit --}}
                         @if (session()->has('username'))
-                        <span class="d-none d-md-block dropdown-toggle ps-2">{{ session('username') }}</span>
+                            <span class="d-none d-md-block dropdown-toggle ps-2">{{ session('username') }}</span>
                         @else
-                        <span class="d-none d-md-block ps-2">Guest</span>
+                            <span class="d-none d-md-block ps-2">Guest</span>
                         @endif
-                       
+
                     </a><!-- End Profile Iamge Icon -->
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                         <li class="dropdown-header">
                             {{-- fungsi gacor kangggangwjiajfeuoipfjhbojdfeuiuiojofuw --}}
-                            @if (session()->has('username')  && session()->has('role'))
-                            <h6>{{ session('username') }}  ({{ session('role') }})</h6>
+                            @if (session()->has('username') && session()->has('role'))
+                                <h6>{{ session('username') }} ({{ session('role') }})</h6>
                             @else
-                            <h6>Guest</h6>
+                                <h6>Guest</h6>
                             @endif
                         </li>
                         <li>
@@ -171,14 +172,14 @@
                 </a>
             </li><!-- End Dashboard Nav -->
 
-            @if(session('role') == 'Admin' || session('role') == '1')
-            <li class="nav-item">
-                <a class="nav-link collapsed {{ request()->routeIs('databarang.index') ? 'active' : '' }}"
-                    href="{{ route('databarang.index') }}">
-                    <i class="bi bi-person"></i>
-                    <span style="font-family: 'General Sans', sans-serif;font-weight:300">Data Barang</span>
-                </a>
-            </li><!-- End Profile Page Nav -->
+            @if (session('role') == 'Admin' || session('role') == '1')
+                <li class="nav-item">
+                    <a class="nav-link collapsed {{ request()->routeIs('databarang.index') ? 'active' : '' }}"
+                        href="{{ route('databarang.index') }}">
+                        <i class="bi bi-person"></i>
+                        <span style="font-family: 'General Sans', sans-serif;font-weight:300">Data Barang</span>
+                    </a>
+                </li><!-- End Profile Page Nav -->
             @endif
 
             <li class="nav-item">
@@ -223,6 +224,7 @@
             class="bi bi-arrow-up-short"></i></a>
 
     <!-- Vendor JS Files -->
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
     <script src="{{ asset('vendor/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('vendor/chart.js/chart.umd.js') }}"></script>
@@ -231,7 +233,22 @@
     <script src="{{ asset('vendor/simple-datatables/simple-datatables.js') }}"></script>
     <script src="{{ asset('vendor/tinymce/tinymce.min.js') }}"></script>
     <script src="{{ asset('vendor/php-email-form/validate.js') }}"></script>
-
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var options = {
+                strings: ["Selamat Datang, {{ session('username') }}",
+                "Di website peminjaman jurusan RPL",
+                ],
+                typeSpeed: 80,
+                backSpeed: 50,
+                backDelay: 2000,
+                startDelay: 500,
+                loop: true,
+                showCursor: true,
+            };
+            var typed = new Typed('#username', options);
+        });
+    </script>
     <!-- Template Main JS File -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>

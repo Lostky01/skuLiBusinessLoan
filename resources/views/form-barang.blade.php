@@ -50,9 +50,9 @@
                                 ?>
                                 <tr>
                                     <th scope="col">Nomor</th>
+                                    <th scope="col">Kode Barang</th>
                                     <th scope="col">Nama Barang</th>
                                     <th scope="col">Jumlah Barang</th>
-                                    <th scope="col">Jumlah Asli Barang</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
@@ -60,9 +60,9 @@
                                 @foreach ($data as $item)
                                     <tr>
                                         <td>{{ $no++ }}</td>
+                                        <td>{{ $item->kode_barang }}</td>
                                         <td>{{ $item->nama }}</td>
                                         <td>{{ $item->jumlah }}</td>
-                                        <td>{{ $item->jumlah_default }}</td>
                                         <td>
                                             <div class="row">
                                                 <div class="col-2">

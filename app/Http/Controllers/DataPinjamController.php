@@ -1,6 +1,9 @@
 <?php
+
 // kalo jelek, download aja terus benerin sendiri terus fuck off, jangan ngedm gm gw, emang gw gabisa ngoding.
+
 namespace App\Http\Controllers;
+
 use App\Models\DataPinjam;
 use App\Models\DataBarang;
 use App\Models\UserDB;
@@ -27,7 +30,7 @@ class DataPinjamController extends Controller
         $request->validate([
             'username' => 'required',
             'password' => 'required',
-            'role' => 'required', 
+            'role' => 'required',
         ]);
         $user = new UserDB();
         $user->username = $request->username;
@@ -99,18 +102,45 @@ class DataPinjamController extends Controller
         $databarang = DataBarang::pluck('nama', 'id');
         return view('form-create-barang', compact('databarang'));
     }
+
+    private function RandNumberinitialize()
+    {
+        return 1000;
+    }
     public function barangstore(Request $request)
     {
         $request->validate([
             'namabarang' => 'required',
-            'jumlahbarang' => 'required',
         ]);
 
         $pinjam = new DataBarang();
-        $pinjam->nama = $request->namabarang;
-        $pinjam->jumlah = $request->jumlahbarang;
-        $pinjam->jumlah_default = $request->jumlahbarang;
+
+        // Get the latest kode_barang
+        $latestBarang = DataBarang::orderBy('kode_barang', 'desc')->first();
+        if ($latestBarang) {
+            $pinjam->kode_barang = $latestBarang->kode_barang + 1;
+        } else {
+            $pinjam->kode_barang = $this->RandNumberinitialize() + 1;
+        }
+        $baseName = $request->namabarang;
+        $similarNames = DataBarang::where('nama', 'like', "$baseName%")->get();
+
+        if ($similarNames->isNotEmpty()) {
+            $maxNumber = 0;
+            foreach ($similarNames as $similarName) {
+                if ($similarName->nama === $baseName) {
+                    $maxNumber = max($maxNumber, 1);
+                } elseif (preg_match('/^' . preg_quote($baseName, '/') . ' (\d+)$/', $similarName->nama, $matches)) {
+                    $maxNumber = max($maxNumber, (int)$matches[1] + 1);
+                }
+            }
+            $pinjam->nama = $maxNumber > 0 ? "$baseName $maxNumber" : $baseName;
+        } else {
+            $pinjam->nama = $baseName;
+        }
+        $pinjam->jumlah = 1;
         $pinjam->save();
+
         return redirect()->route('databarang.index')->with('success', 'Data Barang berhasil disimpan.');
     }
 
@@ -131,15 +161,11 @@ class DataPinjamController extends Controller
 
         $request->validate([
             'namabarang' => 'required',
-            'jumlahbarang' => 'required|integer|min:0',
         ]);
 
-        $newJumlahDefault = $request->input('jumlahbarang');
-        $oldJumlahDefault = $barang->jumlah_default;
-        $difference = $newJumlahDefault - $oldJumlahDefault;
+        /* $barang->kode_barang = $request->input('kodebarang'); */
         $barang->nama = $request->input('namabarang');
-        $barang->jumlah_default = $newJumlahDefault;
-        $barang->jumlah += $difference;
+
         $barang->save();
         return redirect()->route('databarang.index')->with('success', 'Data Barang berhasil diperbarui.');
     }
@@ -163,32 +189,24 @@ class DataPinjamController extends Controller
     {
         $request->validate([
             'kelas' => 'required',
-            'namabarang' => 'required',
             'kodebarang' => 'required',
+            'namabarang' => 'required',
             'mapel' => 'required',
             'namaguru' => 'required',
         ]);
-        $barang = DataBarang::where('id', $request->namabarang)->first();
-        if ($barang) {
-            if ($barang->jumlah > 0) {
-                $barang->jumlah -= 1;
-                $barang->save();
-                $pinjam = new DataPinjam();
-                $pinjam->kelas = $request->kelas;
-                $pinjam->nama_barang = $request->namabarang;
-                $pinjam->kode_barang = $request->kodebarang;
-                $pinjam->pelajaran = $request->mapel;
-                $pinjam->nama_guru = $request->namaguru;
-                $pinjam->status = 'Belum Dikembalikan';
-                $pinjam->save();
-                return redirect()->route('datapinjam.index')->with('success', 'Data Pinjam berhasil disimpan.');
-            } else {
-                return redirect()->route('datapinjam.index')->with('error', 'Jumlah barang tidak mencukupi.');
-            }
-        } else {
-            return redirect()->route('datapinjam.index')->with('error', 'Barang tidak ditemukan.');
-        }
+
+        $pinjam = new DataPinjam();
+        $pinjam->kelas = $request->kelas;
+        $pinjam->kode_barang = $request->kodebarang;
+        $pinjam->nama_barang = $request->namabarang;
+        $pinjam->pelajaran = $request->mapel;
+        $pinjam->nama_guru = $request->namaguru;
+        $pinjam->status = 'Belum Dikembalikan';
+
+        $pinjam->save();
+        return redirect()->route('datapinjam.index')->with('success', 'Data Pinjam berhasil disimpan.');
     }
+
 
     public function EditDataPinjam($id)
     {
@@ -204,8 +222,7 @@ class DataPinjamController extends Controller
         $request->validate([
             'kelas' => 'required',
             'namabarang' => 'required',
-            // Kode barang gak gw sertain karena default nya NULL, jadi kalo gw tambahin required gak bakal bisa ke store form nya
-            'mapel' => 'required', 
+            'mapel' => 'required',
             'namaguru' => 'required',
             'status' => 'required',
         ]);
@@ -230,7 +247,7 @@ class DataPinjamController extends Controller
         //gila pusing bikin nih method
         $barang = DataBarang::find($dataPinjam->nama_barang);
         if($barang) {
-            $barang->jumlah += 1; 
+            $barang->jumlah += 1;
             $barang->save();
         }
 
@@ -244,6 +261,18 @@ class DataPinjamController extends Controller
         session()->flush();
 
         return redirect()->route('datapinjam.login');
+    }
+
+    public function getName(Request $request)
+    {
+        $id = $request->id;
+        $barang = DataBarang::where('kode_barang', $id)->pluck('nama', 'id');
+
+        $options = '';
+        foreach ($barang as $key => $item) {
+            $options .= '<option value="' . $key . '">' . $item . '</option>';
+        }
+        return response()->json(['msg' => 'berhasil', 'data' => $options]);
     }
 
 }
