@@ -26,3 +26,4 @@ Route::post('/auth', [DataPinjamController::class, 'Authuser'])->name('user-auth
 Route::post('/register', [DataPinjamController::class, 'register'])->name('register');
 Route::get('logout', [DataPinjamController::class, 'logout'])->name('logout');
 Route::post('/info/getName', [DataPinjamController::class, 'getName'])->name('info.getName');
+Route::post('/info/getDomainEdit', [DataPinjamController::class, 'getNameEdit'])->name('info.getNameEdit');

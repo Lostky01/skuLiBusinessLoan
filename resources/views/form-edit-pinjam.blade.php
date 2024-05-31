@@ -22,28 +22,21 @@
                                 </div>
                             </div>
                             <div class="row mt-5">
-                                <div class="col-2" style="line-height: -5%;">
-                                    <span>Nama Barang</span>
-                                </div>
-                                <div class="col-10">
-                                    <select class="js-example-basic-single" name="namabarang" id="namabarang" style="padding:15px;width: 100%; border: 1px solid rgba(255, 255, 255, 0.636);background:#F0F2F5;line-height:normal;border-radius:10px">
-                                        <option value="" disabled>Pilih Barang</option>
-                                        @foreach ($databarang as $key => $item)
-                                            <option value="{{ $key }}" @if ($key == $data->nama_barang) selected @endif>
-                                                {{ $item }}</option>
-                                        @endforeach
-                                    </select>   
-                                </div>
-                            </div>
-                            <div class="row mt-5">
                                 <div class="col-2" style="line-height: -5%">
                                     <span>Kode Barang</span>
                                 </div>
                                 <div class="col-10">
-                                    <input type="text" id="kodebarang" name="kodebarang"
-                                        value="{{ $data->kode_barang ? $data->kode_barang : '-' }}"
-                                        {{ $data->kode_barang ? '' : 'disabled' }}
+                                    <input type="text" id="kodebarang" name="kodebarang" value="{{ $data->kode_barang }}"
                                         style="padding:15px;width: 100%; border: 1px solid rgba(255, 255, 255, 0.636);background:#F0F2F5;line-height:normal;border-radius:10px">
+                                </div>
+                            </div>
+                            <div class="row mt-5">
+                                <div class="col-2" style="line-height: -5%;">
+                                    <span>Nama Barang</span>
+                                </div>
+                                <div class="col-10">
+                                    <input type="text" id="namabarang" name="namabarang" value="{{ $data->nama_barang }}"
+                                        style="padding:15px;width: 100%; border: 1px solid rgba(255, 255, 255, 0.636);background:#F0F2F5;line-height:normal;border-radius:10px" readonly>
                                 </div>
                             </div>
                             <div class="row mt-5">
@@ -122,5 +115,38 @@
                 codeInput.removeAttribute('data-text');
             }
         }
+    </script>
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $("#kodebarang").on('input', function() {
+            var kode = $(this).val();
+            if (kode) {
+                $.ajax({
+                    method: 'POST',
+                    url: "{{ route('info.getNameEdit') }}", // Make sure this route is correct
+                    data: {
+                        kode: kode
+                    }, // Send the kode as a parameter
+                    success: function(result) {
+                        if (result.msg === 'berhasil') {
+                            $('#namabarang').val(result.data); // Set the value of the text input
+                        } else {
+                            $('#namabarang').val('No data found');
+                        }
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        console.log(xhr.responseText);
+                        alert(xhr.responseText);
+                    }
+                });
+            } else {
+                $('#namabarang').val(''); // Clear the text input if kode is empty
+            }
+        });
     </script>
 @endsection

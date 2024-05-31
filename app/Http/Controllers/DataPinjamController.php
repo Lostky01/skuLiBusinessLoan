@@ -221,21 +221,23 @@ class DataPinjamController extends Controller
 
         $request->validate([
             'kelas' => 'required',
+            'kodebarang' => 'required',
             'namabarang' => 'required',
             'mapel' => 'required',
             'namaguru' => 'required',
             'status' => 'required',
         ]);
+
         $pinjam->kelas = $request->input('kelas');
+        $pinjam->kode_barang = $request->input('kodebarang');
         $pinjam->nama_barang = $request->input('namabarang');
-        $pinjam->kode_barang = $request->input('kodebarang'); //input gamasalah ya anjeng
         $pinjam->pelajaran = $request->input('mapel');
         $pinjam->nama_guru = $request->input('namaguru');
-        $pinjam->status =  $request->input('status');
+        $pinjam->status = $request->input('status');
+
         $pinjam->save();
 
-
-        return redirect()->route('datapinjam.index')->with('success', 'Data Pinjam berhasil disimpan.');
+        return redirect()->route('datapinjam.index')->with('success', 'Data Pinjam berhasil diperbarui.');
     }
 
     public function destroy($id)
@@ -274,6 +276,20 @@ class DataPinjamController extends Controller
         }
         return response()->json(['msg' => 'berhasil', 'data' => $options]);
     }
+
+    public function getNameEdit(Request $request)
+    {
+        $kode = $request->kode;
+        $data = DataBarang::where('kode_barang', $kode)->first();
+
+        if ($data) {
+            return response()->json(['msg' => 'berhasil', 'data' => $data->nama]);
+        } else {
+            return response()->json(['msg' => 'gagal', 'data' => '']);
+        }
+    }
+
+
 
 }
 // dia adalah orang yang selalu tertarik mendengarkan ceritaku

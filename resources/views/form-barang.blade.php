@@ -64,13 +64,6 @@
                                         <td>{{ $item->nama }}</td>
                                         <td>{{ $item->jumlah }}</td>
                                         <td>
-                                            <div class="row">
-                                                <div class="col-2">
-                                                    <a class="btn btn-primary"
-                                                        href="{{ route('databarang.formeditbarang', $item->id) }}"
-                                                        style="background-color: #13B07E; width: 40px; border: none;"><i
-                                                            class="bi bi-pencil"></i></a>
-                                                </div>
                                                 <div class="col-2">
                                                     <form action="{{ route('deletebarang', $item->id) }}" method="post">
                                                         @csrf
